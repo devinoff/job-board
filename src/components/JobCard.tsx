@@ -18,13 +18,12 @@ export default function JobCard({job, company}: JobCardProps): ReactElement {
 
     const handleCardClick = () => {
         router.push({
-            pathname: '/vacancy/[id]',
-            params: {id: job.id}
+            pathname: '/vacancy/[id]', params: {id: job.id}
         });
     };
 
     return (<div
-        className="group bg-surface border border-edge rounded-md transition-all duration-200 ease-in-out hover:border-gold cursor-pointer"
+        className="group bg-surface/60 border border-edge rounded-md transition-all duration-200 ease-in-out hover:border-gold cursor-pointer"
         onClick={handleCardClick}
     >
         <div className="p-8 flex justify-between items-end">
