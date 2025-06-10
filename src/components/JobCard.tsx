@@ -1,22 +1,60 @@
-import {getTranslations} from "next-intl/server";
+'use client';
+
+import {useTranslations} from "next-intl";
 import {ReactElement} from "react";
 import {getCurrencySymbol} from "@/utils/currency";
 import Image from "next/image";
-import {Link} from "@/i18n/navigation";
+import {Link, useRouter} from "@/i18n/navigation";
+import {Company, Job} from "@/types";
 
-export default async function JobCard(props: Job): Promise<ReactElement> {
-    const t = await getTranslations();
+interface JobCardProps {
+    job: Job;
+    company: Company;
+}
 
-    return (
-        <Link className='bg-surface border border-edge p-8 flex justify-between items-end rounded-md' href={{ pathname: '/vacancy/[id]', params: { id: props.id } }}>
+export default function JobCard({job, company}: JobCardProps): ReactElement {
+    const t = useTranslations();
+    const router = useRouter();
+
+    const handleCardClick = () => {
+        router.push({
+            pathname: '/vacancy/[id]',
+            params: {id: job.id}
+        });
+    };
+
+    return (<div
+        className="group bg-surface border border-edge rounded-md transition-all duration-200 ease-in-out hover:border-gold cursor-pointer"
+        onClick={handleCardClick}
+    >
+        <div className="p-8 flex justify-between items-end">
             <div className='flex gap-6 items-center'>
-                <Image src={props.company.logoUrl} alt={props.company.name} width={100} height={100} className='rounded-md border-1 border-edge' />
+                <Image src={company.logoUrl} alt={company.name} width={100} height={100}
+                       className='rounded-md border border-edge'/>
                 <div className='flex flex-col gap-1'>
-                    <h3 className='text-xl font-semibold'>{props.title}</h3>
-                    <span><span className='text-blue-500 dark:text-blue-400'>{props.company.name}</span> – {props.location.city}{props.location.type === 'remote' && ' / '+t('remote')}</span>
+                    <Link
+                        href={{pathname: '/vacancy/[id]', params: {id: job.id}}}
+                        className="text-xl font-semibold"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {job.title}
+                    </Link>
+                    <span className='text-muted'>
+                            <Link
+                                className='text-blue-500 dark:text-blue-400 hover:underline'
+                                href={{pathname: '/company/[id]', params: {id: company.id}}}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {company.name}
+                            </Link>
+                            – {job.location.city}{job.location.type === 'remote' && ' / ' + t('remote')}
+                        </span>
                 </div>
             </div>
-            <span className='py-1 px-4 bg-gold text-white font-semibold rounded-md'>{getCurrencySymbol(props.salary.currency)} {props.salary.min}{props.salary.max && ' – '+props.salary.max}{props.salary.period !== 'monthly' && ' / '+t(props.salary.period)}</span>
-        </Link>
-    );
+
+            {job.salary && <span className='py-1 px-4 bg-gold text-white font-semibold rounded-md'>
+                        {getCurrencySymbol(job.salary.currency)} {job.salary.min}{job.salary.max && ' – ' + job.salary.max}{job.salary.period !== 'monthly' && ' / ' + t(job.salary.period)}
+                    </span>}
+        </div>
+    </div>);
 }

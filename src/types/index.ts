@@ -1,16 +1,14 @@
-// --- Helper Interfaces / Types ---
-
-interface Company {
+export interface Company {
     id: string;
     name: string;
     logoUrl: string;
     websiteUrl?: string;
     description?: string;
     industry?: string;
-    size?: '1-10' | '11-50' | '51-200' | '201-500' | '501-1000' | '1000+';
+    size?: '1-10' | '11-50' | '51-200' | '201-500' | '501-1000' | '1001-5000' | '5000+';
 }
 
-interface JobLocation {
+export interface JobLocation {
     type: 'on-site' | 'remote' | 'hybrid';
     city: string;
     stateProvince?: string;
@@ -19,7 +17,7 @@ interface JobLocation {
     description?: string;
 }
 
-interface SalaryRange {
+export interface SalaryRange {
     min: number;
     max?: number;
     currency: string;
@@ -28,16 +26,16 @@ interface SalaryRange {
     isEstimated?: boolean;
 }
 
-type JobType = 'full-time' | 'part-time' | 'contract' | 'internship' | 'temporary';
+export type JobType = 'full-time' | 'part-time' | 'contract' | 'internship' | 'temporary' | 'seasonal' | 'volunteer';
 
-type ExperienceLevel = 'entry-level' | 'junior' | 'mid-level' | 'senior' | 'lead' | 'executive';
+export type ExperienceLevel = 'entry-level' | 'junior' | 'mid-level' | 'senior' | 'lead' | 'executive';
 
-interface LanguageRequirement {
+export interface LanguageRequirement {
     name: string;
     proficiency?: 'basic' | 'conversational' | 'fluent' | 'native';
 }
 
-interface JobDescriptionContent {
+export interface JobDescriptionContent {
     summary?: string;
     responsibilities: string[];
     requirements: string[];
@@ -46,23 +44,25 @@ interface JobDescriptionContent {
     fullText?: string;
 }
 
-interface Application {
+export interface Application {
     url?: string;
-    method?: 'external_link' | 'email' | 'internal_form';
+    method?: 'external_link' | 'email' | 'internal_form' | 'phone';
     instructions?: string;
 }
 
-// --- Main Job Interface ---
+export type JobCategory = 'admin' | 'it' | 'sales' | 'services' | 'trade' | 'management' | 'technical' | 'finance' | 'production' | 'construction' | 'logistics' | 'banking' | 'marketing' | 'healthcare' | 'electronics' | 'hr' | 'other' | 'publicAdmin' | 'law' | 'quality' | 'energy' | 'hospitality' | 'education' | 'media' | 'pharmacy' | 'security' | 'agriculture' | 'forestry' | 'culture' | 'internship' | 'seasonal' | 'volunteer' | 'ngo';
 
-interface Job {
+export interface Job {
     id: string;
     title: string;
 
-    company: Company;
+    jobCategory: JobCategory;
+
+    companyId: string;
 
     location: JobLocation;
 
-    salary: SalaryRange;
+    salary?: SalaryRange;
 
     jobTypes: JobType[];
 

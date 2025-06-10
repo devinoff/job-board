@@ -14,11 +14,7 @@ export const metadata: Metadata = {
     title: "Job board", description: "Job board built with next.js",
 };
 
-export default async function RootLayout({
-                                             children, params
-                                         }: {
-    children: React.ReactNode; params: Promise<{ locale: string }>;
-}): Promise<ReactElement> {
+export default async function RootLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }>; }): Promise<ReactElement> {
     const {locale} = await params;
     if (!hasLocale(routing.locales, locale)) {
         notFound();

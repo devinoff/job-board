@@ -8,6 +8,9 @@ export const routing = defineRouting({
         '/': '/',
         '/vacancy/[id]': {
             lv: '/vakance/[id]'
+        },
+        '/company/[id]': {
+            lv: '/uznemums/[id]'
         }
     }
 });
